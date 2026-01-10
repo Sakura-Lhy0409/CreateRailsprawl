@@ -25,6 +25,7 @@ public class RailwayChunkEventListener {
 
     /**
      * 区块加载时触发被动铁轨生成
+     * 使用异步任务队列避免阻塞世界加载
      */
     @SubscribeEvent
     public static void onChunkLoad(ChunkEvent.Load event) {
@@ -44,6 +45,14 @@ public class RailwayChunkEventListener {
             return;
         }
 
+        // 延迟到下一tick异步处理，避免阻塞世界加载
+        level.getServer().execute(() -> processChunkGeneration(level, chunkPos));
+    }
+
+    /**
+     * 异步处理区块铁轨生成
+     */
+    private static void processChunkGeneration(ServerLevel level, ChunkPos chunkPos) {
         // 检查是否已生成
         if (RailwayDataManager.get(level).isChunkGenerated(chunkPos)) {
             return;
