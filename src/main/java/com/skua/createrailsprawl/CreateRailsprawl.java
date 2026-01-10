@@ -11,6 +11,7 @@ import com.skua.createrailsprawl.data.BackupManager;
 import com.skua.createrailsprawl.data.RailwayDataManager;
 import com.skua.createrailsprawl.event.RailwayChunkEventListener;
 import com.skua.createrailsprawl.integration.ClaimIntegration;
+import com.skua.createrailsprawl.integration.TectonicIntegration;
 import com.skua.createrailsprawl.manager.RailwayPathManager;
 import com.skua.createrailsprawl.network.NetworkHandler;
 import com.skua.createrailsprawl.registry.ModItems;
@@ -70,6 +71,7 @@ public class CreateRailsprawl {
         event.enqueueWork(() -> {
             NetworkHandler.register();
             ClaimIntegration.init();
+            TectonicIntegration.init();
             LOGGER.info("[RailwayMod] 通用设置完成");
         });
     }
