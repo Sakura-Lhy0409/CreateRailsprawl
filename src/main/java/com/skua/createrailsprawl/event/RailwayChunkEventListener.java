@@ -25,7 +25,6 @@ public class RailwayChunkEventListener {
 
     /**
      * 区块加载时触发被动铁轨生成
-     * 使用异步任务队列避免阻塞世界加载
      */
     @SubscribeEvent
     public static void onChunkLoad(ChunkEvent.Load event) {
@@ -38,6 +37,11 @@ public class RailwayChunkEventListener {
             return;
         }
 
+        // 世界加载期间跳过，避免阻塞
+        if (level.getServer().getTickCount() < 100) {
+            return;
+        }
+
         ChunkPos chunkPos = event.getChunk().getPos();
 
         // 检查维度是否启用被动生成
@@ -45,14 +49,6 @@ public class RailwayChunkEventListener {
             return;
         }
 
-        // 延迟到下一tick异步处理，避免阻塞世界加载
-        level.getServer().execute(() -> processChunkGeneration(level, chunkPos));
-    }
-
-    /**
-     * 异步处理区块铁轨生成
-     */
-    private static void processChunkGeneration(ServerLevel level, ChunkPos chunkPos) {
         // 检查是否已生成
         if (RailwayDataManager.get(level).isChunkGenerated(chunkPos)) {
             return;
@@ -60,21 +56,13 @@ public class RailwayChunkEventListener {
 
         // 检查领地保护
         if (!ClaimIntegration.canGenerateAt(level, chunkPos.getMiddleBlockPosition(64), null)) {
-            if (RailwayConfig.COMMON.enableDetailedLogging.get()) {
-                CreateRailsprawl.LOGGER.debug("[RailwayMod] 区块 [{},{}] 位于领地内，跳过生成",
-                        chunkPos.x, chunkPos.z);
-            }
             return;
         }
 
-        // 检查玩家建筑
+        // 检查玩家建筑（简化检测，避免卡顿）
         PlayerBuildingDetector.DetectionResult detection =
                 PlayerBuildingDetector.detectPlayerBuilding(level, chunkPos);
         if (detection.hasPlayerBuilding) {
-            if (RailwayConfig.COMMON.enableDetailedLogging.get()) {
-                CreateRailsprawl.LOGGER.debug("[RailwayMod] 区块 [{},{}] 检测到玩家建筑 ({} 个方块)，跳过生成",
-                        chunkPos.x, chunkPos.z, detection.playerBlockCount);
-            }
             return;
         }
 
