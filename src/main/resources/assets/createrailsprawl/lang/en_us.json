@@ -1,5 +1,7 @@
 {
   "item.createrailsprawl.railway_blueprint": "Railway Blueprint",
+  "block.createrailsprawl.track_spawner": "Track Spawner",
+  "item.createrailsprawl.track_spawner": "Track Spawner",
   "itemGroup.createrailsprawl": "Create Railsprawl",
 
   "command.createrailsprawl.generate.start": "Starting railway network generation, Task ID: %s, Radius: %d chunks",

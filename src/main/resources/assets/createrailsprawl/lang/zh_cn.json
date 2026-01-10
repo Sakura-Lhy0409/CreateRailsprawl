@@ -1,5 +1,7 @@
 {
   "item.createrailsprawl.railway_blueprint": "铁轨蓝图",
+  "block.createrailsprawl.track_spawner": "轨道生成器",
+  "item.createrailsprawl.track_spawner": "轨道生成器",
   "itemGroup.createrailsprawl": "机械动力·铁轨蔓延",
 
   "command.createrailsprawl.generate.start": "开始生成铁轨网络，任务ID: %s，半径: %d 区块",

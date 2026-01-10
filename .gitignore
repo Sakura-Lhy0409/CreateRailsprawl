@@ -6,6 +6,7 @@ logs/
 *.class
 *.jar
 !gradle-wrapper.jar
+!libs/*.jar
 .idea/
 *.iml
 *.ipr

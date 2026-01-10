@@ -1,5 +1,15 @@
 # 更新日志
 
+## v1.0.4
+
+### 协议变更
+- 协议从 MIT 变更为 GPL-3.0
+- 添加对 TongDaRailway 项目的致谢
+
+### 代码优化
+- 重构 RoutePlanner 和 RailwayBuilder 缓存管理
+- 修复静态缓存字段引用问题
+
 ## v1.0.3
 
 ### Bug修复

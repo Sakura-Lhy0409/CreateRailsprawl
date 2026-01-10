@@ -2,9 +2,15 @@
 
 Minecraft Forge 1.20.1 模组，依赖 Create Mod 6.0.8。自动生成机械动力风格的铁轨网络。
 
-- 版本：1.0.0
+- 版本：1.0.4
 - 作者：Sakura-Lhy0409
-- 协议：MIT License
+- 协议：GPL-3.0 License
+
+## 致谢
+
+本项目的核心铁路生成算法借鉴了 [TongDaRailway](https://github.com/hxzhitang/TongDaRailway) 项目，感谢原作者 hxzhitang 的开源贡献。
+
+根据 TongDaRailway 项目的 GPL-3.0 开源协议要求，本项目同样采用 GPL-3.0 协议发布。
 
 ## 功能
 
@@ -21,7 +27,7 @@ Minecraft Forge 1.20.1 模组，依赖 Create Mod 6.0.8。自动生成机械动�
 
 1. 安装 Minecraft Forge 1.20.1
 2. 安装 Create Mod 6.0.8
-3. 将 `createrailsprawl-1.20.1-1.0.0.jar` 放入 `mods` 文件夹
+3. 将 `createrailsprawl-1.20.1-1.0.4.jar` 放入 `mods` 文件夹
 
 ## 命令
 

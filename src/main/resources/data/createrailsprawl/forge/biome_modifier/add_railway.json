@@ -1,0 +1,5 @@
+{
+  "type": "createrailsprawl:railway",
+  "biomes": "#minecraft:is_overworld",
+  "feature": "createrailsprawl:railway"
+}

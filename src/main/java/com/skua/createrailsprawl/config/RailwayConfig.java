@@ -67,6 +67,10 @@ public class RailwayConfig {
         public final ForgeConfigSpec.BooleanValue netherPassiveGeneration;
         public final ForgeConfigSpec.BooleanValue endPassiveGeneration;
 
+        // TrackSpawner参数
+        public final ForgeConfigSpec.BooleanValue enableTrackSpawner;
+        public final ForgeConfigSpec.IntValue trackSpawnerRange;
+
         // 调试参数
         public final ForgeConfigSpec.BooleanValue enableDebugMode;
         public final ForgeConfigSpec.BooleanValue enableDetailedLogging;
@@ -167,6 +171,15 @@ public class RailwayConfig {
             endPassiveGeneration = builder
                     .comment("末地启用被动生成")
                     .define("endPassiveGeneration", false);
+            builder.pop();
+
+            builder.push("trackSpawner");
+            enableTrackSpawner = builder
+                    .comment("启用TrackSpawner延迟生成轨道")
+                    .define("enableTrackSpawner", true);
+            trackSpawnerRange = builder
+                    .comment("TrackSpawner触发范围（方块数）")
+                    .defineInRange("trackSpawnerRange", 100, 16, 256);
             builder.pop();
 
             builder.push("debug");

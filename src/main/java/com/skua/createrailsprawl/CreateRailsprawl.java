@@ -2,6 +2,9 @@
 package com.skua.createrailsprawl;
 
 import com.skua.createrailsprawl.async.RailwayTaskQueue;
+import com.skua.createrailsprawl.block.ModBlockEntities;
+import com.skua.createrailsprawl.block.ModBlocks;
+import com.skua.createrailsprawl.client.TrackSpawnerBlockRenderer;
 import com.skua.createrailsprawl.client.RailwayHudRenderer;
 import com.skua.createrailsprawl.client.RailwayKeyBindings;
 import com.skua.createrailsprawl.command.RailwayCommandRegistry;
@@ -15,6 +18,10 @@ import com.skua.createrailsprawl.integration.TectonicIntegration;
 import com.skua.createrailsprawl.manager.RailwayPathManager;
 import com.skua.createrailsprawl.network.NetworkHandler;
 import com.skua.createrailsprawl.registry.ModItems;
+import com.skua.createrailsprawl.worldgen.ModFeatures;
+import com.skua.createrailsprawl.worldgen.RailwayBiomeModifier;
+import com.skua.createrailsprawl.worldgen.RailwayBuilder;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -44,8 +51,18 @@ public class CreateRailsprawl {
         // 注册配置
         RailwayConfig.register();
 
+        // 注册方块和方块实体
+        ModBlocks.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
+
         // 注册物品
         ModItems.register(modEventBus);
+
+        // 注册Feature
+        ModFeatures.register(modEventBus);
+
+        // 注册BiomeModifier序列化器
+        RailwayBiomeModifier.BIOME_MODIFIER_SERIALIZERS.register(modEventBus);
 
         // 注册生命周期事件
         modEventBus.addListener(this::commonSetup);
@@ -79,6 +96,7 @@ public class CreateRailsprawl {
     private void clientSetup(final FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             RailwayKeyBindings.register();
+            BlockEntityRenderers.register(ModBlockEntities.TRACK_SPAWNER.get(), TrackSpawnerBlockRenderer::new);
             LOGGER.info("[RailwayMod] 客户端设置完成");
         });
     }
@@ -95,6 +113,7 @@ public class CreateRailsprawl {
         BackupManager.getInstance().shutdown();
         RailwayPathManager.getInstance().clear();
         RailwayDataManager.reset();
+        RailwayBuilder.clearAll();
         LOGGER.info("[RailwayMod] 服务器关闭，所有系统已清理");
     }
 }

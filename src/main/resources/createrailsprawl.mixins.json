@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.skua.createrailsprawl.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "createrailsprawl.refmap.json",
+  "mixins": [
+    "TrackBlockEntityMixin",
+    "NoiseBasedChunkGeneratorMixin",
+    "WorldGenRegionMixin",
+    "LevelChunkMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
