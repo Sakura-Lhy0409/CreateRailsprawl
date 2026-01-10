@@ -1,0 +1,34 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="https://github.com/skua/createrailsprawl/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+description='''${mod_description}'''
+
+[[dependencies.createrailsprawl]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.createrailsprawl]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+# Create Mod 依赖 - 遵循官方 Wiki 规范
+# https://wiki.createmod.net/developers/depend-on-create/forge-1.20.1
+[[dependencies.createrailsprawl]]
+    modId="create"
+    mandatory=true
+    versionRange="[6.0.8,)"
+    ordering="AFTER"
+    side="BOTH"
