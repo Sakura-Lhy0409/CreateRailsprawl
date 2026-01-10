@@ -1,5 +1,32 @@
 # 更新日志
 
+## v1.1.0 (2026-01-11)
+
+### 🎉 正式版发布
+
+这是 Create Railsprawl 的第一个正式版本！
+
+### ✨ 新特性
+- 完整移植 TongDaRailway 项目到 Forge 1.20.1
+- 支持 Create Mod 6.0.8 的铁轨系统
+- 世界生成时自动生成铁路网络
+- 智能地形适应（桥梁、隧道、路基）
+- 多种车站类型（地面站、地下站）
+
+### 🔧 技术改进
+- 从 NeoForge 1.21 移植到 Forge 1.20.1
+- 优化 Mixin 注入点兼容性
+- 异步铁路生成，提升性能
+
+### 📝 文档
+- 完善 README 文档
+- 添加详细的安装和使用说明
+
+### 🙏 致谢
+- 感谢 [Hello-LuckyHuang](https://github.com/Hello-LuckyHuang/TongDaRailway) 的原项目开源贡献
+
+---
+
 ## v1.0.4
 
 ### 协议变更

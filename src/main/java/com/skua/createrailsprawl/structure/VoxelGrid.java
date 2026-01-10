@@ -1,4 +1,3 @@
-/* MIT License | Copyright (c) 2026 Sakura-Lhy0409 | 允许自由使用、修改、分发，需保留版权声明 */
 package com.skua.createrailsprawl.structure;
 
 import net.minecraft.core.BlockPos;
@@ -11,10 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
-/**
- * 体素网格
- * 3D方块数据存储、调色板管理
- */
 public class VoxelGrid {
     private final List<BlockState> palette;
     private final int[][][] voxelGrid;
@@ -36,29 +31,12 @@ public class VoxelGrid {
         this.size = size;
     }
 
-    public List<BlockState> getPalette() {
-        return palette;
-    }
-
-    public int[][][] getVoxelGrid() {
-        return voxelGrid;
-    }
-
-    public BlockPos getSize() {
-        return size;
-    }
-
-    public int getWidth() {
-        return size.getX();
-    }
-
-    public int getHeight() {
-        return size.getY();
-    }
-
-    public int getDepth() {
-        return size.getZ();
-    }
+    public List<BlockState> getPalette() { return palette; }
+    public int[][][] getVoxelGrid() { return voxelGrid; }
+    public BlockPos getSize() { return size; }
+    public int getWidth() { return size.getX(); }
+    public int getHeight() { return size.getY(); }
+    public int getDepth() { return size.getZ(); }
 
     public ListTag getBlocks() {
         ListTag blocks = new ListTag();
@@ -84,8 +62,8 @@ public class VoxelGrid {
     public ListTag getPaletteTag() {
         ListTag paletteTag = new ListTag();
         if (!palette.isEmpty()) {
-            for (int i = 1; i < palette.size(); i++) {
-                BlockState block = palette.get(i);
+            palette.remove(0);
+            for (BlockState block : palette) {
                 CompoundTag tag = new CompoundTag();
                 tag.putString("Name", BuiltInRegistries.BLOCK.getKey(block.getBlock()).toString());
                 paletteTag.add(tag);
@@ -103,10 +81,8 @@ public class VoxelGrid {
             int paletteIndex = voxelGrid[x][y][z];
             if (paletteIndex > 0 && paletteIndex < palette.size()) {
                 var blockState = palette.get(paletteIndex);
-                if (blockState.is(Blocks.STRUCTURE_VOID))
-                    return null;
-                if (blockState.is(Blocks.STRUCTURE_BLOCK))
-                    return Blocks.AIR.defaultBlockState();
+                if (blockState.is(Blocks.STRUCTURE_VOID)) return null;
+                if (blockState.is(Blocks.STRUCTURE_BLOCK)) return Blocks.AIR.defaultBlockState();
                 return blockState;
             }
         }

@@ -1,101 +1,121 @@
 # Create Railsprawl (机械动力·铁轨蔓延)
 
-Minecraft Forge 1.20.1 模组，依赖 Create Mod 6.0.8。自动生成机械动力风格的铁轨网络。
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Minecraft](https://img.shields.io/badge/Minecraft-1.20.1-green.svg)](https://www.minecraft.net/)
+[![Forge](https://img.shields.io/badge/Forge-47.2.0+-orange.svg)](https://files.minecraftforge.net/)
+[![Create](https://img.shields.io/badge/Create-6.0.8-purple.svg)](https://www.curseforge.com/minecraft/mc-mods/create)
 
-- 版本：1.0.4
-- 作者：Sakura-Lhy0409
-- 协议：GPL-3.0 License
+一个基于 Minecraft Forge 1.20.1 的模组，依赖 Create Mod 6.0.8。在世界生成时自动生成机械动力风格的铁轨网络，包括桥梁、隧道和车站。
 
-## 致谢
+## 📖 模组介绍
 
-本项目的核心铁路生成算法借鉴了 [TongDaRailway](https://github.com/hxzhitang/TongDaRailway) 项目，感谢原作者 hxzhitang 的开源贡献。
+Create Railsprawl 是一个世界生成增强模组，它会在你探索世界时自动生成一套完整的铁路网络系统。这些铁路完全兼容 Create Mod 的列车系统，让你的世界从一开始就拥有便捷的交通网络。
 
-根据 TongDaRailway 项目的 GPL-3.0 开源协议要求，本项目同样采用 GPL-3.0 协议发布。
+### ✨ 主要特性
 
-## 功能
+- **自动铁路生成**：在世界生成时自动规划并建造铁路网络
+- **智能地形适应**：
+  - 遇到山脉自动挖掘隧道
+  - 跨越河谷自动建造桥梁
+  - 平地铺设标准路基
+- **车站系统**：自动在合适位置生成车站，包括地面站和地下站
+- **Create Mod 完全兼容**：生成的铁轨可直接使用 Create Mod 的列车
+- **多种建筑风格**：包含多种隧道、桥梁和车站的建筑样式
+- **性能优化**：异步生成，不影响游戏流畅度
 
-- 自动生成 Create Mod 风格铁轨网络
-- 智能地形适应（桥梁、隧道）
-- 自动生成站台、路灯等附属结构
-- 保护玩家建筑
-- 支持主世界/下界/末地
-- 异步任务队列，不卡服
-- 自动备份与回滚
-- 支持领地插件
+### 🏗️ 生成结构
 
-## 安装
+| 类型 | 结构名称 | 说明 |
+|------|----------|------|
+| 桥梁 | stone_bridge_a | 石质桥梁 |
+| 桥梁 | narrow_stone_bridge_a | 窄石桥 |
+| 隧道 | stone_tunnel_a/b | 石质隧道 |
+| 隧道 | large_brick_tunnel | 大型砖石隧道 |
+| 路基 | roadbed_a | 标准路基 |
+| 车站 | casing_station | 机壳风格车站 |
+| 车站 | super_brick_station | 超级砖石车站 |
+| 车站 | diorite_station | 闪长岩地下车站 |
 
-1. 安装 Minecraft Forge 1.20.1
-2. 安装 Create Mod 6.0.8
-3. 将 `createrailsprawl-1.20.1-1.0.4.jar` 放入 `mods` 文件夹
+## 📦 安装方法
 
-## 命令
+### 前置要求
 
-| 命令 | 权限 | 说明 |
-|------|------|------|
-| `/railway generate <半径>` | 玩家 | 生成铁轨网络 |
-| `/railway remove <半径>` | OP | 删除铁轨数据 |
-| `/railway reload` | OP | 重载配置 |
-| `/railway stats` | 玩家 | 显示统计信息 |
-| `/railway rollback <半径>` | OP | 回滚区块 |
-| `/railway emergency stop` | OP | 紧急停止 |
-| `/railway emergency resume` | OP | 恢复任务 |
-| `/railway debug` | OP | 切换调试模式 |
+- Minecraft 1.20.1
+- Forge 47.2.0 或更高版本
+- Create Mod 6.0.8
 
-## 配置
+### 安装步骤
 
-配置文件：`config/railwaymod-common.toml`
+1. 确保已安装 Minecraft Forge 1.20.1
+2. 下载并安装 [Create Mod 6.0.8](https://www.curseforge.com/minecraft/mc-mods/create)
+3. 下载本模组的 jar 文件
+4. 将 jar 文件放入游戏的 `mods` 文件夹
+5. 启动游戏即可
+
+## 🎮 使用方法
+
+### 自动生成
+
+模组会在世界生成时自动工作，无需任何操作。当你探索新区块时，铁路网络会自动生成。
+
+### 配置文件
+
+配置文件位于：`config/createrailsprawl-common.toml`
+
+主要配置项：
 
 ```toml
-[generation]
-maxGenerationRadius = 20      # 最大生成半径（区块）
-lampInterval = 20             # 路灯间隔
-bridgePillarInterval = 6      # 桥墩间隔
-structureAvoidDistance = 4    # 建筑避让距离
-stationWidth = 3              # 站台宽度
-stationLength = 5             # 站台长度
+# 铁路生成概率 (0.0-1.0)
+railwayChance = 0.3
 
-[performance]
-chunksPerBatch = 2            # 每批处理区块数
-batchIntervalMs = 200         # 批次间隔(ms)
-maxGenerationsPerPlayer = 3   # 每玩家10分钟内最大生成次数
-minTpsForPassiveGeneration = 15 # 被动生成最低TPS
+# 车站生成概率 (0.0-1.0)
+stationChance = 0.1
 
-[blueprint]
-blueprintRadius = 3           # 蓝图生成半径
-blueprintCooldownSeconds = 30 # 蓝图冷却时间
-blueprintConsumeOnUse = true  # 使用后消耗
+# 最大铁路长度（区块）
+maxRailwayLength = 64
 
-[permissions]
-maxRadiusForNonOp = 3         # 非OP最大生成半径
-requireOpForRemove = true     # 删除需要OP
-requireOpForReload = true     # 重载需要OP
+# 是否生成桥梁
+enableBridges = true
 
-[protection]
-protectPlayerBuildings = true # 保护玩家建筑
-playerBuildingDensityThreshold = 10 # 建筑密度阈值
-respectClaimPlugins = true    # 尊重领地插件
-
-[dimensions]
-enableOverworld = true        # 主世界
-enableNether = true           # 下界
-enableEnd = true              # 末地
-netherPassiveGeneration = false
-endPassiveGeneration = false
-
-[backup]
-enableAutoBackup = true       # 自动备份
-maxBackupAge = 24             # 备份保留时间(小时)
+# 是否生成隧道
+enableTunnels = true
 ```
 
-## 物品
+### 物品
 
-- **铁轨蓝图**：右键使用可在周围生成铁轨网络
+- **铁轨蓝图 (Railway Blueprint)**：可用于手动触发区域内的铁路生成
 
-## 注意事项
+## 📋 更新日志
 
-1. 首次生成建议使用小半径（3-5）测试
-2. 大范围生成会分批异步执行
-3. 遇问题可用 `/railway emergency stop` 紧急停止
-4. 使用 `/railway rollback` 可回滚
-5. 建议生成前备份存档
+详见 [CHANGELOG.md](CHANGELOG.md)
+
+## 🙏 致谢
+
+本项目基于 [TongDaRailway](https://github.com/Hello-LuckyHuang/TongDaRailway) 项目移植而来。
+
+特别感谢原作者 **Hello-LuckyHuang** 的开源贡献！原项目为 NeoForge 1.21 版本，本项目将其移植到 Forge 1.20.1 并进行了适配优化。
+
+根据原项目的 GPL-3.0 开源协议要求，本项目同样采用 GPL-3.0 协议发布。
+
+## 📜 开源协议
+
+本项目采用 [GNU General Public License v3.0](LICENSE) 开源协议。
+
+```
+Copyright (C) 2024-2026 Sakura-Lhy0409
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+```
+
+## 🔗 相关链接
+
+- [GitHub 仓库](https://github.com/Sakura-Lhy0409/CreateRailsprawl)
+- [原项目 TongDaRailway](https://github.com/Hello-LuckyHuang/TongDaRailway)
+- [Create Mod](https://www.curseforge.com/minecraft/mc-mods/create)
+
+## 🐛 问题反馈
+
+如果你发现任何 Bug 或有功能建议，请在 [GitHub Issues](https://github.com/Sakura-Lhy0409/CreateRailsprawl/issues) 中提交。

@@ -1,4 +1,3 @@
-/* MIT License | Copyright (c) 2026 Sakura-Lhy0409 | 允许自由使用、修改、分发，需保留版权声明 */
 package com.skua.createrailsprawl.block;
 
 import com.skua.createrailsprawl.CreateRailsprawl;
@@ -12,21 +11,27 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class ModBlocks {
-    public static final DeferredRegister<Block> BLOCKS =
-            DeferredRegister.create(ForgeRegistries.BLOCKS, CreateRailsprawl.MOD_ID);
-    public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, CreateRailsprawl.MOD_ID);
+import java.util.function.Supplier;
 
-    public static final RegistryObject<Block> TRACK_SPAWNER = BLOCKS.register("track_spawner",
+public class ModBlocks {
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, CreateRailsprawl.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, CreateRailsprawl.MOD_ID);
+
+    public static final RegistryObject<Block> TRACK_SPAWNER = registerBlock("track_spawner",
             () -> new TrackSpawnerBlock(BlockBehaviour.Properties.of()
-                    .strength(0.5f)
+                    .strength(3.0F, 6.0F)
                     .sound(SoundType.COPPER)
-                    .lightLevel(s -> 10)
                     .noOcclusion()));
 
-    public static final RegistryObject<Item> TRACK_SPAWNER_ITEM = ITEMS.register("track_spawner",
-            () -> new BlockItem(TRACK_SPAWNER.get(), new Item.Properties()));
+    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = BLOCKS.register(name, block);
+        registerBlockItem(name, toReturn);
+        return toReturn;
+    }
+
+    private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
+        ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    }
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);

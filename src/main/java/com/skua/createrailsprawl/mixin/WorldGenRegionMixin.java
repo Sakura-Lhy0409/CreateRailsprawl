@@ -1,4 +1,3 @@
-/* MIT License | Copyright (c) 2026 Sakura-Lhy0409 | 允许自由使用、修改、分发，需保留版权声明 */
 package com.skua.createrailsprawl.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -10,25 +9,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-/**
- * WorldGenRegion Mixin
- * 绕过ensureCanWrite检查，允许在世界生成阶段放置Track方块
- */
 @Mixin(WorldGenRegion.class)
 public class WorldGenRegionMixin {
-
     @WrapOperation(
-            method = "setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;II)Z",
+            method = "setBlock",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/WorldGenRegion;ensureCanWrite(Lnet/minecraft/core/BlockPos;)Z"),
             remap = false
     )
-    private boolean createRailsprawl$bypassEnsureCanWrite(WorldGenRegion instance, BlockPos blockPos,
-                                                           Operation<Boolean> original,
-                                                           BlockPos pos, BlockState state, int flags, int recursion) {
-        // 如果是Track方块，直接返回true绕过检查
+    private boolean bypassExpensiveCalculationIfNecessary(WorldGenRegion instance, BlockPos blockPos, Operation<Boolean> original, BlockPos pos, BlockState state) {
         if (state.is(AllBlocks.TRACK.get())) {
             return true;
+        } else {
+            return original.call(instance, blockPos);
         }
-        return original.call(instance, blockPos);
     }
 }

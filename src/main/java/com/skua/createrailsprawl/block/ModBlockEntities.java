@@ -1,4 +1,3 @@
-/* MIT License | Copyright (c) 2026 Sakura-Lhy0409 | 允许自由使用、修改、分发，需保留版权声明 */
 package com.skua.createrailsprawl.block;
 
 import com.skua.createrailsprawl.CreateRailsprawl;
@@ -9,7 +8,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModBlockEntities {
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = 
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, CreateRailsprawl.MOD_ID);
 
     public static final RegistryObject<BlockEntityType<TrackSpawnerBlockEntity>> TRACK_SPAWNER =

@@ -1,4 +1,3 @@
-/* MIT License | Copyright (c) 2026 Sakura-Lhy0409 | 允许自由使用、修改、分发，需保留版权声明 */
 package com.skua.createrailsprawl.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -16,37 +15,30 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-/**
- * LevelChunk Mixin
- * 修复Create的TrackBlock在没有BlockEntity时的警告问题
- */
 @Mixin(LevelChunk.class)
 public abstract class LevelChunkMixin {
-
-    @Shadow(remap = false)
-    public abstract BlockState getBlockState(BlockPos pos);
 
     @WrapOperation(
             method = "setBlockState(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)Lnet/minecraft/world/level/block/state/BlockState;",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;hasBlockEntity()Z"),
             remap = false
     )
-    private boolean createRailsprawl$patchHasBlockEntity(BlockState instance, Operation<Boolean> original,
-                                                          BlockPos pos, BlockState state) {
+    private boolean hasBlockEntity$patchException(BlockState instance, Operation<Boolean> original, BlockPos pos, BlockState state) {
         if (state.is(AllBlocks.TRACK.get()) && !state.getValue(TrackBlock.HAS_BE)) {
             return false;
+        } else {
+            return original.call(instance);
         }
-        return original.call(instance);
     }
+
+    @Shadow(remap = false)
+    public abstract BlockState getBlockState(BlockPos pos);
 
     @Inject(
             method = "promotePendingBlockEntity(Lnet/minecraft/core/BlockPos;Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/world/level/block/entity/BlockEntity;",
-            at = @At("HEAD"),
-            cancellable = true,
-            remap = false
+            at = @At(value = "HEAD"), cancellable = true, remap = false
     )
-    private void createRailsprawl$patchPromotePendingBlockEntity(BlockPos pos, CompoundTag tag,
-                                                                  CallbackInfoReturnable<BlockEntity> cir) {
+    private void hasBlockEntity$patchException(BlockPos pos, CompoundTag tag, CallbackInfoReturnable<BlockEntity> cir) {
         BlockState state = this.getBlockState(pos);
         if (state.is(AllBlocks.TRACK.get()) && !state.getValue(TrackBlock.HAS_BE)) {
             cir.setReturnValue(null);

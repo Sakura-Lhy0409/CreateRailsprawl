@@ -1,6 +1,6 @@
-/* MIT License | Copyright (c) 2026 Sakura-Lhy0409 | 允许自由使用、修改、分发，需保留版权声明 */
 package com.skua.createrailsprawl.mixin;
 
+import com.skua.createrailsprawl.mixin.ITrackPreGenExtension;
 import com.simibubi.create.content.trains.track.BezierConnection;
 import com.simibubi.create.content.trains.track.TrackBlockEntity;
 import com.simibubi.create.content.trains.track.TrackBlockEntityTilt;
@@ -18,25 +18,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * TrackBlockEntity Mixin
- * 注入预生成连接功能，用于世界生成阶段添加BezierConnection
- */
-@Mixin(value = TrackBlockEntity.class, remap = false)
+@Mixin(TrackBlockEntity.class)
 public abstract class TrackBlockEntityMixin extends SmartBlockEntity implements ITrackPreGenExtension {
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract void addConnection(BezierConnection connection);
 
-    @Shadow
+    @Shadow(remap = false)
     public TrackBlockEntityTilt tilt;
-
-    @Unique
-    List<BezierConnection> createRailsprawl$preConnections = new ArrayList<>();
 
     public TrackBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
+
+    @Unique
+    List<BezierConnection> createRailsprawl$preConnections = new ArrayList<>();
 
     @Unique
     @Override
@@ -45,8 +41,8 @@ public abstract class TrackBlockEntityMixin extends SmartBlockEntity implements 
     }
 
     @Inject(method = "tick", at = @At("RETURN"), remap = false)
-    private void createRailsprawl$onTick(CallbackInfo ci) {
-        if (!createRailsprawl$preConnections.isEmpty() && !level.isClientSide()) {
+    private void tick$addConnection(CallbackInfo ci) {
+        if(!createRailsprawl$preConnections.isEmpty() && !level.isClientSide()){
             createRailsprawl$preConnections.forEach(this::addConnection);
             tilt.tryApplySmoothing();
             createRailsprawl$preConnections.clear();

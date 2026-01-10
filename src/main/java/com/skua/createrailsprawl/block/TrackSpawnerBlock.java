@@ -1,4 +1,3 @@
-/* MIT License | Copyright (c) 2026 Sakura-Lhy0409 | 允许自由使用、修改、分发，需保留版权声明 */
 package com.skua.createrailsprawl.block;
 
 import net.minecraft.core.BlockPos;
@@ -12,7 +11,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class TrackSpawnerBlock extends BaseEntityBlock {
-
     public TrackSpawnerBlock(Properties properties) {
         super(properties);
     }
@@ -31,6 +29,9 @@ public class TrackSpawnerBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (level.isClientSide()) {
+            return null;
+        }
         return createTickerHelper(type, ModBlockEntities.TRACK_SPAWNER.get(), TrackSpawnerBlockEntity::tick);
     }
 }
