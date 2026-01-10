@@ -54,60 +54,41 @@ public class RailwayBuilder {
 
     /**
      * 生成区域铁路（参考 TongDaRailway）
-     * 异步生成，不阻塞主线程
+     * 阻塞等待生成完成
      */
     public void generateRailway(RegionPos regionPos) {
-        // 如果已生成或正在生成，直接返回
-        if (regionRailways.containsKey(regionPos) || regionFutures.containsKey(regionPos)) {
+        // 如果已生成，直接返回
+        if (regionRailways.containsKey(regionPos)) {
             return;
         }
 
         // 尝试从本地存档读取
-        try {
-            ServerLevel serverLevel = Objects.requireNonNull(level.getServer()).getLevel(ServerLevel.OVERWORLD);
-            if (serverLevel != null) {
-                ModSaveData data = ModSaveData.get(serverLevel);
-                RailwayMap savedData = data.getRailwayMap(regionPos);
-                if (savedData != null) {
-                    regionRailways.put(regionPos, savedData);
-                    CreateRailsprawl.LOGGER.info("区域 {} 从存档读取完成", regionPos);
-                    return;
-                }
-            }
-        } catch (Exception e) {
-            // 忽略存档读取错误，继续生成
+        ModSaveData data = ModSaveData.get(Objects.requireNonNull(level.getServer()).getLevel(ServerLevel.OVERWORLD));
+        RailwayMap savedData = data.getRailwayMap(regionPos);
+        if (savedData != null) {
+            regionRailways.put(regionPos, savedData);
+            CreateRailsprawl.LOGGER.info("区域 {} 从存档读取完成", regionPos);
+            return;
         }
 
-        // 启动异步线程生成（不阻塞）
-        var future = executor.submit(() -> {
-            try {
-                long startTime = System.currentTimeMillis();
-
-                RailwayMap railwayMap = new RailwayMap(regionPos, level.getSeed());
-                railwayMap.startPlanningRoutes(level);
-
-                regionRailways.put(regionPos, railwayMap);
-
-                // 保存到存档
-                try {
-                    ServerLevel serverLevel = Objects.requireNonNull(level.getServer()).getLevel(ServerLevel.OVERWORLD);
-                    if (serverLevel != null) {
-                        ModSaveData data = ModSaveData.get(serverLevel);
-                        data.setRailwayMap(regionPos, railwayMap);
-                    }
-                } catch (Exception e) {
-                    // 忽略保存错误
-                }
-
-                long endTime = System.currentTimeMillis();
-                CreateRailsprawl.LOGGER.info("区域 {} 铁路生成完成，耗时 {}ms", regionPos, endTime - startTime);
-            } catch (Exception e) {
-                CreateRailsprawl.LOGGER.error("区域 {} 铁路生成失败", regionPos, e);
-            } finally {
-                regionFutures.remove(regionPos);
+        // 如果还未生成，启动线程并阻塞等待
+        try {
+            if (!regionFutures.containsKey(regionPos)) {
+                var future = executor.submit(() -> {
+                    RailwayMap railwayMap = new RailwayMap(regionPos, level.getSeed());
+                    railwayMap.startPlanningRoutes(level);
+                    regionRailways.put(regionPos, railwayMap);
+                    data.setRailwayMap(regionPos, railwayMap);
+                });
+                regionFutures.put(regionPos, future);
             }
-        });
-        regionFutures.put(regionPos, future);
+            // 阻塞等待生成完成
+            regionFutures.get(regionPos).get();
+        } catch (InterruptedException | ExecutionException e) {
+            CreateRailsprawl.LOGGER.error("区域 {} 铁路生成失败: {}", regionPos, e.getMessage());
+        } finally {
+            regionFutures.remove(regionPos);
+        }
     }
 
     public void shutdown() {

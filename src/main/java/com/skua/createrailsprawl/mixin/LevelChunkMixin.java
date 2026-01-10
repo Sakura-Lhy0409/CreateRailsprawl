@@ -26,9 +26,6 @@ public abstract class LevelChunkMixin {
     @Shadow(remap = false)
     public abstract BlockState getBlockState(BlockPos pos);
 
-    /**
-     * 修复setBlockState时的hasBlockEntity检查
-     */
     @WrapOperation(
             method = "setBlockState(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)Lnet/minecraft/world/level/block/state/BlockState;",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;hasBlockEntity()Z"),
@@ -36,16 +33,12 @@ public abstract class LevelChunkMixin {
     )
     private boolean createRailsprawl$patchHasBlockEntity(BlockState instance, Operation<Boolean> original,
                                                           BlockPos pos, BlockState state) {
-        // 如果是Track方块且没有BE标记，返回false避免警告
         if (state.is(AllBlocks.TRACK.get()) && !state.getValue(TrackBlock.HAS_BE)) {
             return false;
         }
         return original.call(instance);
     }
 
-    /**
-     * 修复promotePendingBlockEntity时的问题
-     */
     @Inject(
             method = "promotePendingBlockEntity(Lnet/minecraft/core/BlockPos;Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/world/level/block/entity/BlockEntity;",
             at = @At("HEAD"),
@@ -55,7 +48,6 @@ public abstract class LevelChunkMixin {
     private void createRailsprawl$patchPromotePendingBlockEntity(BlockPos pos, CompoundTag tag,
                                                                   CallbackInfoReturnable<BlockEntity> cir) {
         BlockState state = this.getBlockState(pos);
-        // 如果是Track方块且没有BE标记，直接返回null
         if (state.is(AllBlocks.TRACK.get()) && !state.getValue(TrackBlock.HAS_BE)) {
             cir.setReturnValue(null);
         }
