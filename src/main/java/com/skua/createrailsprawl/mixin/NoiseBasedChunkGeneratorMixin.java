@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(NoiseBasedChunkGenerator.class)
 public abstract class NoiseBasedChunkGeneratorMixin {
 
-    @Inject(method = "buildSurface", at = @At("HEAD"))
+    @Inject(method = "buildSurface", at = @At("HEAD"), remap = false)
     public void createRailsprawl$onBuildSurface(WorldGenRegion level, StructureManager structureManager,
                                                  RandomState random, ChunkAccess chunk, CallbackInfo ci) {
         var dimensionType = level.dimensionType();

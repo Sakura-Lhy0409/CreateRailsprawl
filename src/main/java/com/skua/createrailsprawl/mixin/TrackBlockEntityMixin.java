@@ -24,7 +24,7 @@ import java.util.List;
 @Mixin(TrackBlockEntity.class)
 public abstract class TrackBlockEntityMixin extends SmartBlockEntity implements ITrackPreGenExtension {
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract void addConnection(BezierConnection connection);
 
     // 预生成连接列表
