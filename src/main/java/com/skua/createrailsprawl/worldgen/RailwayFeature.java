@@ -63,6 +63,12 @@ public class RailwayFeature extends Feature<NoneFeatureConfiguration> {
 
         // 获取RailwayBuilder和RailwayMap（只获取已生成的数据，不阻塞等待）
         RailwayBuilder builder = RailwayBuilder.getInstance(world.getSeed());
+        
+        // 如果builder还没准备好，跳过
+        if (builder == null) {
+            return false;
+        }
+        
         RailwayMap railwayMap = builder.regionRailways.get(regionPos);
 
         // 如果数据还没准备好，跳过（异步生成会在 NoiseBasedChunkGeneratorMixin 中触发）
