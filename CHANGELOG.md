@@ -1,5 +1,31 @@
 # 更新日志
 
+## v1.2.2 (2026-01-11)
+
+### ✨ 新特性
+- 添加 SQLite 分片存储 (RailwayShardStorage)
+  - 支持大规模铁路网络的高效存储
+  - 按区域分片存储数据
+- 添加按维度覆盖配置 (DimensionRailwaySettings)
+  - 支持为不同维度设置独立的铁路生成参数
+- 添加配置校验 sanitize 方法
+  - 自动修复超出范围的配置值
+
+### 🔧 性能优化
+- 添加空间索引优化 (RailwaySpatialIndex)
+  - 网格划分实现 O(1)~O(k) 查询复杂度
+  - LRU 缓存限制内存使用
+- 添加异步规划服务 (RailwayPlanningService)
+  - 增量规划避免重复计算
+  - Epoch 机制防止过期任务
+- 添加区块生成追踪 (ChunkGenTracker)
+  - 区分世界生成阶段和玩家操作阶段
+- 添加 ComputeService 工具类
+  - 封装异步任务提交
+  - 支持 Epoch 检查
+
+---
+
 ## v1.2.1 (2026-01-11)
 
 ### 🔧 性能优化
