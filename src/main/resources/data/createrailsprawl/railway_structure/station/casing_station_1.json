@@ -1,6 +1,6 @@
 {
   "class": "station",
   "type": "normal",
-  "template": "tongdarailway:station/normal/casing_station_1",
+  "template": "createrailsprawl:station/normal/casing_station_1",
   "height_offset": 10
 }

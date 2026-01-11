@@ -69,6 +69,28 @@
   - ~~支持缓存失效机制（invalidateChunk）~~
   - ~~参考 RoadWeaver 的 `RoadSpatialIndex` 实现~~
 
+## Bug 修复记录
+
+### 2026-01-11: 模板命名空间错误
+- **问题**: 所有 `railway_structure/*.json` 配置文件中的 `template` 字段使用了错误的命名空间 `tongdarailway:`
+- **原因**: 从 TongDaRailway 项目移植时未更新命名空间
+- **影响**: 模板加载失败，导致 Station Templates: 0, Railway Templates: 0
+- **修复**: 将所有 `tongdarailway:` 替换为 `createrailsprawl:`
+- **涉及文件**:
+  - station/casing_station_0.json
+  - station/casing_station_1.json
+  - station/casing_station_cross.json
+  - station/diorite_station_0.json
+  - station/diorite_station_1.json
+  - station/super_brick_station_0.json
+  - station/super_brick_station_1.json
+  - railway/large_brick_tunnel.json
+  - railway/narrow_stone_bridge_a.json
+  - railway/roadbed_a.json
+  - railway/stone_bridge_a.json
+  - railway/stone_tunnel_a.json
+  - railway/stone_tunnel_b.json
+
 ## 参考文件
 
 - RoadWeaver: `D:\编程项目\我的世界模组\RoadWeaver\common\src\main\java\net\shiroha233\roadweaver\runtime\`

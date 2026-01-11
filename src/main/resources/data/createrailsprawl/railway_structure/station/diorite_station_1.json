@@ -1,6 +1,6 @@
 {
   "class": "station",
   "type": "underground",
-  "template": "tongdarailway:station/underground/diorite_underground_station_1",
+  "template": "createrailsprawl:station/underground/diorite_underground_station_1",
   "height_offset": 0
 }
