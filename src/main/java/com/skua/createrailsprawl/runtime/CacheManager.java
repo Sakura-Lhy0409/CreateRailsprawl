@@ -2,6 +2,7 @@ package com.skua.createrailsprawl.runtime;
 
 import com.skua.createrailsprawl.CreateRailsprawl;
 import com.skua.createrailsprawl.client.map.RailwayMapSnapshot;
+import com.skua.createrailsprawl.railway.RailwayBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 
@@ -16,6 +17,9 @@ import java.util.concurrent.TimeUnit;
  */
 public final class CacheManager {
     private CacheManager() {}
+
+    // 缓存大小限制
+    public static final int MAX_REGION_CACHE_SIZE = 200_000;
 
     // 地图快照缓存
     private static final ConcurrentHashMap<ResourceLocation, RailwayMapSnapshot> MAP_SNAPSHOT_CACHE = new ConcurrentHashMap<>();
@@ -37,6 +41,8 @@ public final class CacheManager {
             clearTask.cancel(false);
             clearTask = null;
         }
+        // 清理 RailwayBuilder 缓存
+        RailwayBuilder.clearAll();
         CreateRailsprawl.LOGGER.debug("CacheManager: 所有缓存已清理");
     }
 
@@ -44,6 +50,16 @@ public final class CacheManager {
         if (level == null) return;
         MAP_SNAPSHOT_CACHE.remove(level.dimension().location());
         CreateRailsprawl.LOGGER.debug("CacheManager: 维度 {} 的缓存已清理", level.dimension().location());
+    }
+
+    /**
+     * 使铁路缓存失效（数据更新后调用）
+     */
+    public static void invalidateRailwayCache(ServerLevel level, int regionX, int regionZ) {
+        // 目前仅清理地图快照，后续可扩展
+        if (level != null) {
+            MAP_SNAPSHOT_CACHE.remove(level.dimension().location());
+        }
     }
 
     // 地图快照缓存操作
@@ -69,5 +85,12 @@ public final class CacheManager {
             clearTask.cancel(false);
             clearTask = null;
         }
+    }
+
+    /**
+     * 获取缓存统计信息（调试用）
+     */
+    public static String getStats() {
+        return String.format("CacheManager: MapSnapshot=%d", MAP_SNAPSHOT_CACHE.size());
     }
 }

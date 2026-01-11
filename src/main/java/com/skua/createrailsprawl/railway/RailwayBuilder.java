@@ -1,6 +1,7 @@
 package com.skua.createrailsprawl.railway;
 
 import com.skua.createrailsprawl.CreateRailsprawl;
+import com.skua.createrailsprawl.runtime.ThreadPoolManager;
 import com.skua.createrailsprawl.util.ModSaveData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
@@ -18,8 +19,6 @@ public class RailwayBuilder {
     public final Map<RegionPos, int[][]> regionHeightMap = new ConcurrentHashMap<>();
     public final Map<RegionPos, int[][]> regionStructureMap = new ConcurrentHashMap<>();
 
-    private final LinkedBlockingQueue<Runnable> regionRailwayLoadQueue = new LinkedBlockingQueue<>();
-    private final ThreadPoolExecutor regionRailwayLoadPoolExecutor = new ThreadPoolExecutor(64, 1024, 1, TimeUnit.DAYS, regionRailwayLoadQueue);
     private final WorldGenRegion level;
 
     private RailwayBuilder(WorldGenRegion level) {
@@ -56,9 +55,18 @@ public class RailwayBuilder {
 
         try {
             if (!regionFutures.containsKey(regionPos)) {
-                var f = regionRailwayLoadPoolExecutor.submit(() -> {
+                final long epoch = ThreadPoolManager.currentEpoch();
+                var f = ThreadPoolManager.computeExecutor().submit(() -> {
+                    if (!ThreadPoolManager.isEpoch(epoch)) {
+                        CreateRailsprawl.LOGGER.debug("Region {} 任务已过期，跳过", regionPos);
+                        return;
+                    }
                     RailwayMap railwayMap = new RailwayMap(regionPos);
                     railwayMap.startPlanningRoutes(level);
+                    if (!ThreadPoolManager.isEpoch(epoch)) {
+                        CreateRailsprawl.LOGGER.debug("Region {} 任务执行中过期，丢弃结果", regionPos);
+                        return;
+                    }
                     regionRailways.put(regionPos, railwayMap);
                     data.putRailwayMap(regionPos, railwayMap);
                 });
@@ -70,5 +78,19 @@ public class RailwayBuilder {
         } finally {
             regionFutures.remove(regionPos);
         }
+    }
+
+    /**
+     * 清理所有缓存数据（服务器停止时调用）
+     */
+    public static synchronized void clearAll() {
+        if (instance != null) {
+            instance.regionFutures.clear();
+            instance.regionRailways.clear();
+            instance.regionHeightMap.clear();
+            instance.regionStructureMap.clear();
+            instance = null;
+        }
+        seed = 0;
     }
 }

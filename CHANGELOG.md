@@ -1,5 +1,26 @@
 # 更新日志
 
+## v1.2.1 (2026-01-11)
+
+### 🔧 性能优化
+- 重构 RailwayBuilder 线程池管理
+  - 移除自建线程池，改用 ThreadPoolManager.computeExecutor()
+  - 添加 clearAll() 方法清理缓存
+- 添加 Epoch 机制防止过期任务执行
+  - 服务器重启后旧任务自动失效
+- ThreadPoolManager 增强
+  - 添加独立的生成线程池 GENERATION_EXEC
+  - 支持 resizeComputePool() 和 resizeGenerationPool() 运行时调整
+- CacheManager 增强
+  - 添加 MAX_REGION_CACHE_SIZE 缓存大小限制
+  - 添加 invalidateRailwayCache() 方法
+  - 服务器停止时自动清理 RailwayBuilder 缓存
+
+### 🙏 致谢
+- 感谢 [RoadWeaver](https://github.com/shiroha-233/RoadWeaver) 项目的线程池和缓存管理方案参考
+
+---
+
 ## v1.2.0 (2026-01-11)
 
 ### ✨ 新特性

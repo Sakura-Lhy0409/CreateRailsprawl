@@ -1,6 +1,5 @@
 package com.skua.createrailsprawl.runtime;
 
-import com.skua.createrailsprawl.RailwayConfig;
 import net.minecraft.server.MinecraftServer;
 
 import java.util.concurrent.ExecutorService;
@@ -15,9 +14,14 @@ public final class ThreadPoolManager {
     private ThreadPoolManager() {}
 
     private static volatile ExecutorService COMPUTE_EXEC;
+    private static volatile ExecutorService GENERATION_EXEC;
     private static final AtomicLong EPOCH = new AtomicLong(0L);
     private static final ThreadLocal<Long> WORK_START = ThreadLocal.withInitial(System::currentTimeMillis);
     private static final long WORK_PERIOD_MS = 20;
+
+    // 默认线程数配置
+    private static int computeThreads = 0;  // 0 = 自动 (CPU-1)
+    private static int generationThreads = 4;
 
     private static ThreadFactory namedFactory(String prefix) {
         return r -> {
@@ -29,11 +33,20 @@ public final class ThreadPoolManager {
 
     public static synchronized void onServerStarted(MinecraftServer server) {
         EPOCH.incrementAndGet();
-        int threads = Math.max(1, Runtime.getRuntime().availableProcessors() - 1);
+
+        // 计算线程池
+        int cThreads = resolveComputeThreads();
         if (COMPUTE_EXEC != null && !COMPUTE_EXEC.isShutdown()) {
             try { COMPUTE_EXEC.shutdownNow(); } catch (Throwable ignored) {}
         }
-        COMPUTE_EXEC = Executors.newFixedThreadPool(threads, namedFactory("CRS-Compute"));
+        COMPUTE_EXEC = Executors.newFixedThreadPool(cThreads, namedFactory("CRS-Compute"));
+
+        // 生成线程池
+        int gThreads = Math.max(1, generationThreads);
+        if (GENERATION_EXEC != null && !GENERATION_EXEC.isShutdown()) {
+            try { GENERATION_EXEC.shutdownNow(); } catch (Throwable ignored) {}
+        }
+        GENERATION_EXEC = Executors.newFixedThreadPool(gThreads, namedFactory("CRS-Gen"));
     }
 
     public static synchronized void onServerStopping() {
@@ -42,6 +55,10 @@ public final class ThreadPoolManager {
             try { COMPUTE_EXEC.shutdownNow(); } catch (Throwable ignored) {}
             COMPUTE_EXEC = null;
         }
+        if (GENERATION_EXEC != null) {
+            try { GENERATION_EXEC.shutdownNow(); } catch (Throwable ignored) {}
+            GENERATION_EXEC = null;
+        }
     }
 
     public static ExecutorService computeExecutor() {
@@ -49,13 +66,56 @@ public final class ThreadPoolManager {
         if (e == null || e.isShutdown()) {
             synchronized (ThreadPoolManager.class) {
                 if (COMPUTE_EXEC == null || COMPUTE_EXEC.isShutdown()) {
-                    int threads = Math.max(1, Runtime.getRuntime().availableProcessors() - 1);
-                    COMPUTE_EXEC = Executors.newFixedThreadPool(threads, namedFactory("CRS-Compute"));
+                    COMPUTE_EXEC = Executors.newFixedThreadPool(resolveComputeThreads(), namedFactory("CRS-Compute"));
                 }
                 e = COMPUTE_EXEC;
             }
         }
         return e;
+    }
+
+    public static ExecutorService generationExecutor() {
+        ExecutorService e = GENERATION_EXEC;
+        if (e == null || e.isShutdown()) {
+            synchronized (ThreadPoolManager.class) {
+                if (GENERATION_EXEC == null || GENERATION_EXEC.isShutdown()) {
+                    GENERATION_EXEC = Executors.newFixedThreadPool(Math.max(1, generationThreads), namedFactory("CRS-Gen"));
+                }
+                e = GENERATION_EXEC;
+            }
+        }
+        return e;
+    }
+
+    /**
+     * 运行时调整计算线程池大小
+     */
+    public static synchronized void resizeComputePool(int threads) {
+        computeThreads = threads;
+        int cThreads = resolveComputeThreads();
+        if (COMPUTE_EXEC != null && !COMPUTE_EXEC.isShutdown()) {
+            try { COMPUTE_EXEC.shutdownNow(); } catch (Throwable ignored) {}
+        }
+        COMPUTE_EXEC = Executors.newFixedThreadPool(cThreads, namedFactory("CRS-Compute"));
+    }
+
+    /**
+     * 运行时调整生成线程池大小
+     */
+    public static synchronized void resizeGenerationPool(int threads) {
+        generationThreads = threads;
+        int gThreads = Math.max(1, threads);
+        if (GENERATION_EXEC != null && !GENERATION_EXEC.isShutdown()) {
+            try { GENERATION_EXEC.shutdownNow(); } catch (Throwable ignored) {}
+        }
+        GENERATION_EXEC = Executors.newFixedThreadPool(gThreads, namedFactory("CRS-Gen"));
+    }
+
+    private static int resolveComputeThreads() {
+        if (computeThreads > 0) {
+            return computeThreads;
+        }
+        return Math.max(1, Runtime.getRuntime().availableProcessors() - 1);
     }
 
     public static long currentEpoch() {
