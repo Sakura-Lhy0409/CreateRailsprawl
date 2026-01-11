@@ -1,4 +1,7 @@
 {
+  "gui.createrailsprawl.railway_map.title": "铁路网地图",
+  "key.categories.createrailsprawl": "机械动力铁轨蔓延",
+  "key.createrailsprawl.open_railway_map": "打开铁路网地图",
   "block.createrailsprawl.track_spawner": "轨道生成器",
   "itemGroup.createrailsprawl": "机械动力铁轨蔓延"
 }

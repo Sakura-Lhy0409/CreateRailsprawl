@@ -1,4 +1,7 @@
 {
+  "gui.createrailsprawl.railway_map.title": "Railway Network Map",
+  "key.categories.createrailsprawl": "Create Railsprawl",
+  "key.createrailsprawl.open_railway_map": "Open Railway Map",
   "block.createrailsprawl.track_spawner": "Track Spawner",
   "itemGroup.createrailsprawl": "Create Railsprawl"
 }
