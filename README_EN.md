@@ -4,6 +4,7 @@
 [![Minecraft](https://img.shields.io/badge/Minecraft-1.20.1-green.svg)](https://www.minecraft.net/)
 [![Forge](https://img.shields.io/badge/Forge-47.2.0+-orange.svg)](https://files.minecraftforge.net/)
 [![Create](https://img.shields.io/badge/Create-6.0.8-purple.svg)](https://www.curseforge.com/minecraft/mc-mods/create)
+[![Version](https://img.shields.io/badge/Version-1.2.3-brightgreen.svg)](https://github.com/Sakura-Lhy0409/CreateRailsprawl/releases)
 
 English | [简体中文](README.md)
 
@@ -26,46 +27,70 @@ Create Railsprawl is a world generation enhancement mod that automatically gener
 - **Multiple Building Styles**: Includes various tunnel, bridge, and station architectural styles
 - **Performance Optimized**: Async generation with thread pool management, no impact on game smoothness
 
-### 🏗️ Generated Structures
-
-| Type | Structure Name | Description |
-|------|----------------|-------------|
-| Bridge | stone_bridge_a | Stone bridge |
-| Bridge | narrow_stone_bridge_a | Narrow stone bridge |
-| Tunnel | stone_tunnel_a/b | Stone tunnel |
-| Tunnel | large_brick_tunnel | Large brick tunnel |
-| Roadbed | roadbed_a | Standard roadbed |
-| Station | casing_station | Casing-style station |
-| Station | super_brick_station | Super brick station |
-| Station | diorite_station | Diorite underground station |
-
-## 📦 Installation
-
-### Requirements
-
-- Minecraft 1.20.1
-- Forge 47.2.0 or higher
-- Create Mod 6.0.8
+## 🎮 Quick Start
 
 ### Installation Steps
 
-1. Make sure Minecraft Forge 1.20.1 is installed
+1. Make sure **Minecraft Forge 1.20.1** (47.2.0 or higher) is installed
 2. Download and install [Create Mod 6.0.8](https://www.curseforge.com/minecraft/mc-mods/create)
 3. Download this mod's jar file
 4. Place the jar file in the game's `mods` folder
 5. Launch the game
 
-## 🎮 Usage
+### Basic Usage
 
-### Automatic Generation
+1. **Create a new world**: The mod works automatically during world generation
+2. **Explore the world**: Railway networks will automatically generate as you explore new chunks
+3. **View the map**: Press **N key** to open the railway map interface
+4. **Use trains**: After finding a station, you can use Create Mod's train system
 
-The mod works automatically during world generation, no action required. Railway networks will automatically generate as you explore new chunks.
+## 🗺️ Railway Map Interface
 
-### Configuration
+Press **N key** to open the railway map interface, where you can:
+
+- View the generated railway network layout
+- View station positions and names
+- Use mouse wheel to zoom the map
+- Drag to move the map view
+- Click on a station to teleport to that location (requires OP permission)
+
+## 🏗️ Generated Structures
+
+### Bridge Types
+
+| Structure Name | Description | Use Case |
+|----------------|-------------|----------|
+| stone_bridge_a | Stone bridge | Crossing rivers, canyons |
+| narrow_stone_bridge_a | Narrow stone bridge | Crossing small water bodies |
+
+### Tunnel Types
+
+| Structure Name | Description | Use Case |
+|----------------|-------------|----------|
+| stone_tunnel_a | Stone tunnel A | Through mountains |
+| stone_tunnel_b | Stone tunnel B | Through mountains (variant) |
+| large_brick_tunnel | Large brick tunnel | Through large mountains |
+
+### Roadbed Types
+
+| Structure Name | Description | Use Case |
+|----------------|-------------|----------|
+| roadbed_a | Standard roadbed | Flat terrain |
+
+### Station Types
+
+| Structure Name | Description | Features |
+|----------------|-------------|----------|
+| casing_station_0/1 | Casing-style station | Surface station, Create style |
+| casing_station_cross | Casing cross station | Intersection station |
+| super_brick_station_0/1 | Super brick station | Surface station, large |
+| diorite_station_0/1 | Diorite underground station | Underground station |
+
+## ⚙️ Configuration
 
 Configuration file location: `config/createrailsprawl-common.toml`
 
-Main configuration options:
+### Main Configuration Options
 
 ```toml
 # Enable track spawner
@@ -76,9 +101,38 @@ generateTrackSpawner = true
 
 # Use track spawner (true) or place tracks during world generation (false)
 placeTracksUsingTrackSpawner = true
+
+# Station spacing (in chunks)
+stationSpacing = 32
+
+# Railway generation height range
+minRailwayHeight = 64
+maxRailwayHeight = 128
+
+# Maximum slope (degrees)
+maxSlope = 15.0
+
+# Generate bridges
+generateBridges = true
+
+# Generate tunnels
+generateTunnels = true
 ```
 
-### Commands
+### Dimension Configuration
+
+You can set independent railway generation parameters for different dimensions:
+
+```toml
+[dimensions.minecraft:overworld]
+enabled = true
+stationSpacing = 32
+
+[dimensions.minecraft:the_nether]
+enabled = false
+```
+
+## 🔧 Command Reference
 
 The mod provides `/railsprawl` command for debugging and viewing railway information (requires OP permission):
 
@@ -87,6 +141,47 @@ The mod provides `/railsprawl` command for debugging and viewing railway informa
 | `/railsprawl info` | Display mod info, including loaded station and railway template counts |
 | `/railsprawl region` | Display railway status in current region (station count, route chunks, etc.) |
 | `/railsprawl goto` | Teleport to nearest station (searches surrounding 3x3 regions) |
+
+## 🔄 How It Works
+
+### Railway Generation Process
+
+1. **Region Planning**: When a player enters a new region, the mod plans the railway network for that region
+2. **Station Placement**: Plans stations at suitable locations based on terrain and configuration
+3. **Route Calculation**: Uses A* algorithm to calculate optimal routes between stations
+4. **Terrain Adaptation**: Automatically selects bridges, tunnels, or roadbed based on terrain
+5. **Async Generation**: Generates railways in background threads without affecting game performance
+
+### Performance Optimization
+
+- **Async Processing**: All time-consuming operations execute in background threads
+- **Spatial Index**: Uses grid partitioning for fast queries
+- **Cache Management**: LRU cache limits memory usage
+- **Incremental Planning**: Avoids recalculating already planned regions
+
+## ❓ FAQ
+
+### Q: Railways not generating?
+
+A: Please check the following:
+1. Make sure Create Mod is properly installed
+2. Check if `enableTrackSpawner` is `true` in the config file
+3. Try exploring more chunks, railways need a certain range to generate
+
+### Q: Game lag?
+
+A: The mod has been performance optimized, but if you still experience lag:
+1. Try increasing the `stationSpacing` config value
+2. Reduce the number of simultaneously loaded chunks
+3. Make sure enough memory is allocated to the game
+
+### Q: How to disable railway generation in a specific dimension?
+
+A: Add dimension configuration in the config file and set `enabled = false`
+
+### Q: Railway conflicts with other mods?
+
+A: This mod is compatible with most mods. If you encounter issues, please report on GitHub Issues.
 
 ## 📋 Changelog
 
@@ -126,6 +221,16 @@ the Free Software Foundation, either version 3 of the License, or
 - [RoadWeaver](https://github.com/shiroha-233/RoadWeaver)
 - [Create Mod](https://www.curseforge.com/minecraft/mc-mods/create)
 
-## 🐛 Bug Reports
+## 🐛 Bug Reports & 💡 Feature Requests
 
-If you find any bugs or have feature suggestions, please submit them on [GitHub Issues](https://github.com/Sakura-Lhy0409/CreateRailsprawl/issues).
+If you encounter issues, have optimization suggestions, or feature requests while using this MOD, please follow these steps to submit feedback:
+
+1. Go to the project's [Issues](https://github.com/Sakura-Lhy0409/CreateRailsprawl/issues) page
+2. Click the **New issue** button in the top right corner
+3. Select the appropriate template (Bug Report/Feature Request) and fill in the detailed information
+4. After confirming the information is correct, click **Submit new issue**
+
+⚠️ **Important Notes**
+- Please search existing Issues before submitting to avoid duplicate reports
+- When reporting bugs, please provide: Minecraft version, Forge version, this MOD version, error logs (complete crash-report or latest.log), and reproduction steps
+- Please do not post irrelevant content in Issues, such content will be closed directly

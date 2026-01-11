@@ -221,6 +221,16 @@ the Free Software Foundation, either version 3 of the License, or
 - [RoadWeaver](https://github.com/shiroha-233/RoadWeaver)
 - [Create Mod](https://www.curseforge.com/minecraft/mc-mods/create)
 
-## 🐛 问题反馈
+## 🐛 Bug 反馈 & 💡 功能建议
 
-如果你发现任何 Bug 或有功能建议，请在 [GitHub Issues](https://github.com/Sakura-Lhy0409/CreateRailsprawl/issues) 中提交。
+如果使用本 MOD 时遇到问题、有优化建议或功能需求，请按照以下步骤提交反馈：
+
+1. 进入项目的 [Issues](https://github.com/Sakura-Lhy0409/CreateRailsprawl/issues) 页面
+2. 点击右上角的 **New issue** 按钮
+3. 选择对应的模板（Bug 报告/功能请求），按照模板填写详细信息
+4. 确认信息无误后，点击 **Submit new issue** 提交
+
+⚠️ **注意事项**
+- 提交前请先搜索已有的 Issues，避免重复反馈
+- 反馈 Bug 时请务必提供：Minecraft 版本、Forge 版本、本 MOD 版本、报错日志（完整 crash-report 或 latest.log）、复现步骤
+- 请勿在 Issues 中发送无关内容，违规内容将被直接关闭
