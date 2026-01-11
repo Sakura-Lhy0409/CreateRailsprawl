@@ -68,20 +68,14 @@ Configuration file location: `config/createrailsprawl-common.toml`
 Main configuration options:
 
 ```toml
-# Railway generation probability (0.0-1.0)
-railwayChance = 0.3
+# Enable track spawner
+enableTrackSpawner = true
 
-# Station generation probability (0.0-1.0)
-stationChance = 0.1
+# Generate track spawner blocks
+generateTrackSpawner = true
 
-# Maximum railway length (chunks)
-maxRailwayLength = 64
-
-# Enable bridge generation
-enableBridges = true
-
-# Enable tunnel generation
-enableTunnels = true
+# Use track spawner (true) or place tracks during world generation (false)
+placeTracksUsingTrackSpawner = true
 ```
 
 ### Commands

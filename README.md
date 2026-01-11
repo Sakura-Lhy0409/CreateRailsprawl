@@ -68,20 +68,14 @@ Create Railsprawl 是一个世界生成增强模组，它会在你探索世界�
 主要配置项：
 
 ```toml
-# 铁路生成概率 (0.0-1.0)
-railwayChance = 0.3
+# 是否启用轨道生成器
+enableTrackSpawner = true
 
-# 车站生成概率 (0.0-1.0)
-stationChance = 0.1
+# 是否生成轨道生成器方块
+generateTrackSpawner = true
 
-# 最大铁路长度（区块）
-maxRailwayLength = 64
-
-# 是否生成桥梁
-enableBridges = true
-
-# 是否生成隧道
-enableTunnels = true
+# 使用轨道生成器(true)还是在世界生成时直接放置铁轨(false)
+placeTracksUsingTrackSpawner = true
 ```
 
 ### 命令
