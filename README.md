@@ -81,9 +81,15 @@ enableBridges = true
 enableTunnels = true
 ```
 
-### 物品
+### 命令
 
-- **铁轨蓝图 (Railway Blueprint)**：可用于手动触发区域内的铁路生成
+模组提供了 `/railsprawl` 命令用于调试和查看铁路信息（需要 OP 权限）：
+
+| 命令 | 说明 |
+|------|------|
+| `/railsprawl info` | 显示模组信息，包括已加载的车站和铁路模板数量 |
+| `/railsprawl region` | 显示当前所在区域的铁路状态（车站数、路线区块数等） |
+| `/railsprawl goto` | 传送到最近的车站（搜索周围 3x3 区域） |
 
 ## 📋 更新日志
 
