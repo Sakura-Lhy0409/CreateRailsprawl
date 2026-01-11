@@ -66,7 +66,7 @@ public class ModStructureManager extends SimpleJsonResourceReloadListener {
                         .open();
                 try (DataInputStream stream = new DataInputStream(new BufferedInputStream(
                         new GZIPInputStream(resourceStream)))) {
-                    rootTag = NbtIo.read(stream, NbtAccounter.unlimitedHeap());
+                    rootTag = NbtIo.read(stream, NbtAccounter.UNLIMITED);
                 } catch (Exception e) {
                     CreateRailsprawl.LOGGER.error("Load Structure nbt file Err: {}", nbtLocation.getPath(), e);
                 }

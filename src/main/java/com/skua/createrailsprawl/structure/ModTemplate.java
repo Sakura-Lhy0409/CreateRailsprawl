@@ -28,7 +28,7 @@ public abstract class ModTemplate {
     public ModTemplate(Path path, int heightOffset) {
         try (DataInputStream stream = new DataInputStream(new BufferedInputStream(
                 new GZIPInputStream(Files.newInputStream(path, StandardOpenOption.READ))))) {
-            CompoundTag rootTag = NbtIo.read(stream, NbtAccounter.unlimitedHeap());
+            CompoundTag rootTag = NbtIo.read(stream, NbtAccounter.UNLIMITED);
             voxelGrid = parseStructureNBT(rootTag);
         } catch (Exception e) {
             CreateRailsprawl.LOGGER.error(e.getMessage());
