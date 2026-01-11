@@ -1,5 +1,6 @@
 {
-  "type": "createrailsprawl:railway",
+  "type": "forge:add_features",
   "biomes": "#minecraft:is_overworld",
-  "feature": "createrailsprawl:railway"
+  "features": "createrailsprawl:railway",
+  "step": "surface_structures"
 }
