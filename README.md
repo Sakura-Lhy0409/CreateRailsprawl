@@ -102,6 +102,12 @@ enableTunnels = true
 
 特别感谢原作者 **Hello-LuckyHuang** 的开源贡献！原项目为 NeoForge 1.21 版本，本项目将其移植到 Forge 1.20.1 并进行了适配优化。
 
+本项目的铁路网络地图界面和性能优化方案借鉴自 [RoadWeaver](https://github.com/shiroha-233/RoadWeaver) 项目。
+
+特别感谢 RoadWeaver 项目的贡献者：
+- **shiroha-233** - 项目作者
+- 以及所有 RoadWeaver 项目的贡献者们
+
 根据原项目的 GPL-3.0 开源协议要求，本项目同样采用 GPL-3.0 协议发布。
 
 ## 📜 开源协议
