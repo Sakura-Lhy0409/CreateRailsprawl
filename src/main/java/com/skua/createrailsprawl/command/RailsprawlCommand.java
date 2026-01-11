@@ -33,8 +33,8 @@ public class RailsprawlCommand {
     private static int showInfo(CommandContext<CommandSourceStack> context) {
         CommandSourceStack source = context.getSource();
 
-        int stationCount = ModStructureManager.getStationTemplates().size();
-        int railwayCount = ModStructureManager.getRailwayTemplates().size();
+        int stationCount = ModStructureManager.normalStation.size() + ModStructureManager.undergroundStation.size();
+        int railwayCount = ModStructureManager.ground.size() + ModStructureManager.tunnel.size() + ModStructureManager.bridge.size();
 
         String info = String.format(
             "=== Create Railsprawl Info ===\n" +
