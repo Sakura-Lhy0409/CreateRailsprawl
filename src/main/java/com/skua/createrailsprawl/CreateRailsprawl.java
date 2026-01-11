@@ -2,7 +2,6 @@ package com.skua.createrailsprawl;
 
 import com.skua.createrailsprawl.block.ModBlockEntities;
 import com.skua.createrailsprawl.block.ModBlocks;
-import com.skua.createrailsprawl.registry.ModItems;
 import com.skua.createrailsprawl.worldgen.ModFeatures;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.api.distmarker.Dist;
@@ -33,7 +32,6 @@ public class CreateRailsprawl {
 
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
-        ModItems.register(modEventBus);
         ModFeatures.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
