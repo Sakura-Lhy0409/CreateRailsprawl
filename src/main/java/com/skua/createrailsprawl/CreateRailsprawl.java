@@ -2,10 +2,14 @@ package com.skua.createrailsprawl;
 
 import com.skua.createrailsprawl.block.ModBlockEntities;
 import com.skua.createrailsprawl.block.ModBlocks;
+import com.skua.createrailsprawl.block.TrackSpawnerBlockRenderer;
+import com.skua.createrailsprawl.command.RailsprawlCommand;
 import com.skua.createrailsprawl.worldgen.ModFeatures;
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -46,10 +50,19 @@ public class CreateRailsprawl {
     public void onServerStarting(ServerStartingEvent event) {
     }
 
+    @SubscribeEvent
+    public void onRegisterCommands(RegisterCommandsEvent event) {
+        RailsprawlCommand.register(event.getDispatcher());
+        LOGGER.info("Railsprawl commands registered");
+    }
+
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+            event.enqueueWork(() -> {
+                BlockEntityRenderers.register(ModBlockEntities.TRACK_SPAWNER.get(), TrackSpawnerBlockRenderer::new);
+            });
         }
     }
 }
