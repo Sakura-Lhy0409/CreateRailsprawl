@@ -31,15 +31,43 @@
 
 ## 低优先级
 
-- [ ] **异步规划服务**
-  - 参考 RoadWeaver 的 `planRectAsync()` 实现增量规划
-  - 避免重复计算已规划的区域
-  - 使用 `CompletableFuture` 改进异步处理
+- [x] **ComputeService 工具类**
+  - ~~封装 `CompletableFuture.supplyAsync()` 和 `runAsync()`~~
+  - ~~统一使用 `ThreadPoolManager.computeExecutor()`~~
+  - ~~简化异步任务提交代码~~
 
-- [ ] **数据持久化优化**
-  - 当前 NBT 存储对小规模数据足够
-  - 如果铁路网络规模增大，考虑迁移到 SQLite 分片存储
-  - 参考 RoadWeaver 的 `RoadShardStorage` 实现
+- [x] **ChunkGenTracker 区块生成追踪**
+  - ~~区分世界生成阶段（WorldGenRegion）和玩家操作阶段~~
+  - ~~只在区块首次生成时执行某些操作~~
+  - ~~参考 RoadWeaver 的 `ChunkGenTracker` 实现~~
+
+- [x] **异步规划服务**
+  - ~~参考 RoadWeaver 的 `planRectAsync()` 实现增量规划~~
+  - ~~避免重复计算已规划的区域~~
+  - ~~使用 `CompletableFuture` 改进异步处理~~
+
+- [x] **数据持久化优化**
+  - ~~当前 NBT 存储对小规模数据足够~~
+  - ~~如果铁路网络规模增大，考虑迁移到 SQLite 分片存储~~
+  - ~~参考 RoadWeaver 的 `RoadShardStorage` 实现~~
+
+- [x] **配置系统增强**（RoadWeaver 主要优势之一：100+ 配置项）
+  - [x] ~~添加更多可配置项：~~
+    - [x] ~~A* 寻路权重（orthoStepCost、diagStepCost、elevationWeight、heuristicWeight 等）~~
+    - [x] ~~线程占空比 threadDutyCycle（1-100%）~~
+    - [x] ~~计算线程数 computeThreads（0=自动）~~
+    - [x] ~~生成线程数 generationThreads~~
+    - [x] ~~最大并发生成数 maxConcurrentGenerations~~
+  - [x] ~~支持按维度覆盖配置（DimensionRoadSettings）~~
+  - [x] ~~添加配置校验和默认值修复（sanitize 方法）~~
+  - ~~参考 RoadWeaver 的 `ModConfig` 和 `DimensionRoadSettings`~~
+
+- [x] **空间索引优化**（RoadWeaver 主要优势之一：网格划分 + LRU 缓存）
+  - ~~使用网格划分实现高效空间查询（GRID_SIZE = 8）~~
+  - ~~查询复杂度从 O(n) 降低到 O(1)~O(k)~~
+  - ~~添加 LRU 缓存限制内存使用（MAX_CACHED_CHUNKS_PER_DIM = 512）~~
+  - ~~支持缓存失效机制（invalidateChunk）~~
+  - ~~参考 RoadWeaver 的 `RoadSpatialIndex` 实现~~
 
 ## 参考文件
 

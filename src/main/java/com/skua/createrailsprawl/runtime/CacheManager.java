@@ -2,6 +2,7 @@ package com.skua.createrailsprawl.runtime;
 
 import com.skua.createrailsprawl.CreateRailsprawl;
 import com.skua.createrailsprawl.client.map.RailwayMapSnapshot;
+import com.skua.createrailsprawl.persistence.RailwayShardStorage;
 import com.skua.createrailsprawl.railway.RailwayBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -43,6 +44,14 @@ public final class CacheManager {
         }
         // 清理 RailwayBuilder 缓存
         RailwayBuilder.clearAll();
+        // 清理区块生成追踪
+        ChunkGenTracker.clearAll();
+        // 清理规划服务
+        RailwayPlanningService.resetAll();
+        // 清理空间索引
+        RailwaySpatialIndex.clearAllCache();
+        // 关闭数据库连接
+        RailwayShardStorage.shutdown();
         CreateRailsprawl.LOGGER.debug("CacheManager: 所有缓存已清理");
     }
 
