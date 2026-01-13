@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "createrailsprawl:block/track_spawner"
+    }
+  }
+}

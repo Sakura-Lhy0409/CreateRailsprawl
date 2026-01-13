@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "createrailsprawl:block/track_spawner_bottom",
+    "top": "createrailsprawl:block/track_spawner_top",
+    "side": "createrailsprawl:block/track_spawner"
+  }
+}

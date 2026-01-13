@@ -1,0 +1,6 @@
+{
+  "class": "roadbed",
+  "type": "bridge",
+  "template": "createrailsprawl:railway/bridge/narrow_stone_bridge_a",
+  "height_offset": 6
+}

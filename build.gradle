@@ -1,0 +1,134 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+version = '1.2.3'
+group = 'com.skua.createrailsprawl'
+
+base {
+    archivesName = 'createrailsprawl'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+
+    copyIdeResources = true
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                createrailsprawl {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        client {
+            property 'forge.enabledGameTestNamespaces', 'createrailsprawl'
+        }
+
+        server {
+            property 'forge.enabledGameTestNamespaces', 'createrailsprawl'
+            args '--nogui'
+        }
+
+        gameTestServer {
+            property 'forge.enabledGameTestNamespaces', 'createrailsprawl'
+        }
+
+        data {
+            args '--mod', 'createrailsprawl', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+        }
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    mavenCentral()
+    maven { url "https://maven.shedaniel.me/" }
+    maven { url "https://maven.blamejared.com" }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.4.13'
+
+    // Create Mod - 使用项目内 libs 目录
+    compileOnly fg.deobf(files("libs/create-1.20.1-6.0.8.jar"))
+
+    // Ponder (包含 Couple, VecHelper 等类)
+    compileOnly fg.deobf(files("libs/Ponder-Forge-1.20.1-1.0.91.jar"))
+
+    // Registrate (包含 BlockEntry, NonNullSupplier 等类)
+    compileOnly fg.deobf(files("libs/Registrate-MC1.20-1.3.3.jar"))
+
+    // Mixin
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    // MixinExtras (用于@WrapOperation等高级注解)
+    compileOnly files("libs/MixinExtras-0.4.1.jar")
+    annotationProcessor files("libs/MixinExtras-0.4.1.jar")
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            minecraft_version: '1.20.1',
+            minecraft_version_range: '[1.20.1,1.21)',
+            forge_version: '47.4.13',
+            forge_version_range: '[47,)',
+            loader_version_range: '[47,)',
+            mod_id: 'createrailsprawl',
+            mod_name: 'Create Railsprawl',
+            mod_license: 'GPL-3.0',
+            mod_version: '1.2.3',
+            mod_authors: 'Skua',
+            mod_description: 'Generate Create-style railway networks with passive chunk loading and active command generation.'
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes([
+                'Specification-Title'     : 'createrailsprawl',
+                'Specification-Vendor'    : 'Skua',
+                'Specification-Version'   : '1',
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : 'Skua',
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+    finalizedBy 'reobfJar'
+}
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
