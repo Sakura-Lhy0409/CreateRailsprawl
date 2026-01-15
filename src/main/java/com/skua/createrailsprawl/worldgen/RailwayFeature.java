@@ -21,6 +21,7 @@ import com.simibubi.create.content.trains.track.*;
 import net.createmod.catnip.data.Couple;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -45,10 +46,18 @@ public class RailwayFeature extends Feature<RailwayFeatureConfig> {
         WorldGenLevel world = ctx.level();
         ChunkAccess chunk = world.getChunk(cPos.x, cPos.z);
 
+        // Try to get existing instance first
         RailwayBuilder builder = RailwayBuilder.getInstance(ctx.level().getSeed());
+        
+        // If not initialized and we have a WorldGenRegion, initialize it
+        if (builder == null && world instanceof WorldGenRegion worldGenRegion) {
+            builder = RailwayBuilder.getInstance(ctx.level().getSeed(), worldGenRegion);
+            // Trigger railway generation for this region
+            builder.generateRailway(regionPos);
+        }
+        
         if (builder == null) {
-            // RailwayBuilder not initialized yet, skip for now
-            // Railway will be generated when chunk is processed by NoiseBasedChunkGeneratorMixin
+            // Still not initialized, skip for now
             return true;
         }
 
