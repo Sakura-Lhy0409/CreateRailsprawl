@@ -325,12 +325,19 @@ the Free Software Foundation, either version 3 of the License, or
 
 这意味着即使在生成大量铁路时，游戏也能保持流畅运行。
 
+## 💖 支持作者
+
+如果你喜欢这个模组，可以通过爱发电支持我，随缘赞助~
+
+[![爱发电](https://img.shields.io/badge/爱发电-支持作者-ff69b4.svg)](https://afdian.com/a/LHY0409)
+
 ## 🔗 相关链接
 
 - [GitHub 仓库](https://github.com/Sakura-Lhy0409/CreateRailsprawl)
 - [原项目 TongDaRailway](https://github.com/Hello-LuckyHuang/TongDaRailway)
 - [RoadWeaver](https://github.com/shiroha-233/RoadWeaver)
 - [Create Mod](https://www.curseforge.com/minecraft/mc-mods/create)
+- [爱发电](https://afdian.com/a/LHY0409)
 
 ## 🐛 Bug 反馈 & 💡 功能建议
 

@@ -325,12 +325,19 @@ This mod uses a dual thread pool architecture, with all time-consuming operation
 
 This means the game remains smooth even when generating large amounts of railways.
 
+## 💖 Support the Author
+
+If you like this mod, you can support me on Afdian (Chinese Patreon alternative)~
+
+[![Afdian](https://img.shields.io/badge/Afdian-Support%20Author-ff69b4.svg)](https://afdian.com/a/LHY0409)
+
 ## 🔗 Links
 
 - [GitHub Repository](https://github.com/Sakura-Lhy0409/CreateRailsprawl)
 - [Original TongDaRailway](https://github.com/Hello-LuckyHuang/TongDaRailway)
 - [RoadWeaver](https://github.com/shiroha-233/RoadWeaver)
 - [Create Mod](https://www.curseforge.com/minecraft/mc-mods/create)
+- [Afdian](https://afdian.com/a/LHY0409)
 
 ## 🐛 Bug Reports & 💡 Feature Requests
 
