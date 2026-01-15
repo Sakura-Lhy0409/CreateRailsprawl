@@ -28,10 +28,10 @@ description='''${mod_description}'''
     side="BOTH"
 
 # Create Mod 依赖 - 向下兼容所有 1.20.1 版本
-# 支持 Create 5.1.0 及以上所有版本
+# 支持 Create 0.5.1 及以上所有版本（包括 0.5.1j 和 6.0.x）
 [[dependencies.createrailsprawl]]
     modId="create"
     mandatory=true
-    versionRange="[5.1.0,)"
+    versionRange="[0.5.1,)"
     ordering="AFTER"
     side="BOTH"
