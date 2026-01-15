@@ -4,11 +4,11 @@
 [![Minecraft](https://img.shields.io/badge/Minecraft-1.20.1-green.svg)](https://www.minecraft.net/)
 [![Forge](https://img.shields.io/badge/Forge-47.2.0+-orange.svg)](https://files.minecraftforge.net/)
 [![Create](https://img.shields.io/badge/Create-6.0.8-purple.svg)](https://www.curseforge.com/minecraft/mc-mods/create)
-[![Version](https://img.shields.io/badge/Version-1.2.3-brightgreen.svg)](https://github.com/Sakura-Lhy0409/CreateRailsprawl/releases)
+[![Version](https://img.shields.io/badge/Version-1.2.4-brightgreen.svg)](https://github.com/Sakura-Lhy0409/CreateRailsprawl/releases)
 
 English | [简体中文](README.md)
 
-A Minecraft Forge 1.20.1 mod that depends on Create Mod 6.0.8. Automatically generates Create-style railway networks during world generation, including bridges, tunnels, and stations.
+A Minecraft Forge 1.20.1 mod that depends on Create Mod 5.1.0+. Automatically generates Create-style railway networks during world generation, including bridges, tunnels, and stations.
 
 ## 📖 Introduction
 
@@ -32,7 +32,7 @@ Create Railsprawl is a world generation enhancement mod that automatically gener
 ### Installation Steps
 
 1. Make sure **Minecraft Forge 1.20.1** (47.2.0 or higher) is installed
-2. Download and install [Create Mod 6.0.8](https://www.curseforge.com/minecraft/mc-mods/create)
+2. Download and install [Create Mod 5.1.0+](https://www.curseforge.com/minecraft/mc-mods/create)
 3. Download this mod's jar file
 4. Place the jar file in the game's `mods` folder
 5. Launch the game

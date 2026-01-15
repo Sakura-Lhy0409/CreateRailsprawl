@@ -27,11 +27,11 @@ description='''${mod_description}'''
     ordering="NONE"
     side="BOTH"
 
-# Create Mod 依赖 - 遵循官方 Wiki 规范
-# https://wiki.createmod.net/developers/depend-on-create/forge-1.20.1
+# Create Mod 依赖 - 向下兼容所有 1.20.1 版本
+# 支持 Create 5.1.0 及以上所有版本
 [[dependencies.createrailsprawl]]
     modId="create"
     mandatory=true
-    versionRange="[6.0.8,)"
+    versionRange="[5.1.0,)"
     ordering="AFTER"
     side="BOTH"

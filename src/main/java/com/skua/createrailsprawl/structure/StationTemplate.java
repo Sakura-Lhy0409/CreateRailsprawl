@@ -66,9 +66,9 @@ public class StationTemplate extends ModTemplate {
     private void searchExit() {
         var palette = voxelGrid.getPalette();
         BlockPos off = new BlockPos(
-                -(int) Math.floor(getWidth() / 2.0) + 1,
-                -heightOffset + 1,
-                -(int) Math.floor(getDepth() / 2.0) + 1
+                -(int) Math.floor(getWidth() / 2.0),
+                -heightOffset,
+                -(int) Math.floor(getDepth() / 2.0)
         );
         for (int i = 0; i < voxelGrid.getWidth(); i++) {
             for (int j = 0; j < voxelGrid.getHeight(); j++) {
