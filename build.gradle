@@ -5,7 +5,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
 
-version = '1.2.4'
+version = '1.2.5'
 group = 'com.skua.createrailsprawl'
 
 base {
@@ -90,7 +90,7 @@ tasks.named('processResources', ProcessResources).configure {
             mod_id: 'createrailsprawl',
             mod_name: 'Create Railsprawl',
             mod_license: 'GPL-3.0',
-            mod_version: '1.2.4',
+            mod_version: '1.2.5',
             mod_authors: 'Skua',
             mod_description: 'Generate Create-style railway networks with passive chunk loading and active command generation.'
     ]

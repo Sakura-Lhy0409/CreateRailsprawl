@@ -46,10 +46,17 @@ public class RailwayFeature extends Feature<RailwayFeatureConfig> {
         ChunkAccess chunk = world.getChunk(cPos.x, cPos.z);
 
         RailwayBuilder builder = RailwayBuilder.getInstance(ctx.level().getSeed());
-        if (builder == null) return false;
+        if (builder == null) {
+            // RailwayBuilder not initialized yet, skip for now
+            // Railway will be generated when chunk is processed by NoiseBasedChunkGeneratorMixin
+            return true;
+        }
 
         RailwayMap railwayMap = builder.regionRailways.get(regionPos);
-        if (railwayMap == null) return false;
+        if (railwayMap == null) {
+            // Railway map not generated yet for this region, skip for now
+            return true;
+        }
 
         // 根据路线生成路基
         if (railwayMap.routeMap.containsKey(cPos)) {
@@ -172,6 +179,7 @@ public class RailwayFeature extends Feature<RailwayFeatureConfig> {
 
     private static void placeRoadbed(RailwayMap railwayMap, ChunkPos cPos, ChunkAccess chunk, WorldGenLevel world) {
         var routes = railwayMap.routeMap.get(cPos);
+        if (routes == null) return;
         for (CurveRoute route : routes) {
             int seed = route.getSegments().size();
             RailwayTemplate ground = ModStructureManager.getRandomGround(seed);
