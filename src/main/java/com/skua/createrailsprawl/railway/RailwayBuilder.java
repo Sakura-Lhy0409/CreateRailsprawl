@@ -19,10 +19,10 @@ public class RailwayBuilder {
     public final Map<RegionPos, int[][]> regionHeightMap = new ConcurrentHashMap<>();
     public final Map<RegionPos, int[][]> regionStructureMap = new ConcurrentHashMap<>();
 
-    private final WorldGenRegion level;
+    private final ServerLevel serverLevel;
 
     private RailwayBuilder(WorldGenRegion level) {
-        this.level = level;
+        this.serverLevel = level.getLevel();
     }
 
     public static synchronized RailwayBuilder getInstance(long seed, WorldGenRegion level) {
@@ -40,12 +40,15 @@ public class RailwayBuilder {
         return instance;
     }
 
-    public void generateRailway(RegionPos regionPos) {
+    public void generateRailway(RegionPos regionPos, WorldGenRegion worldGenRegion) {
+        if (worldGenRegion == null) {
+            return;
+        }
         if (regionRailways.containsKey(regionPos)) {
             return;
         }
 
-        ModSaveData data = ModSaveData.get(Objects.requireNonNull(level.getServer()).getLevel(ServerLevel.OVERWORLD));
+        ModSaveData data = ModSaveData.get(serverLevel);
         RailwayMap savedData = data.getRailwayMap(regionPos);
         if (savedData != null) {
             regionRailways.put(regionPos, savedData);
@@ -62,7 +65,7 @@ public class RailwayBuilder {
                         return;
                     }
                     RailwayMap railwayMap = new RailwayMap(regionPos);
-                    railwayMap.startPlanningRoutes(level);
+                    railwayMap.startPlanningRoutes(worldGenRegion);
                     if (!ThreadPoolManager.isEpoch(epoch)) {
                         CreateRailsprawl.LOGGER.debug("Region {} 任务执行中过期，丢弃结果", regionPos);
                         return;

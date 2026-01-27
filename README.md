@@ -6,7 +6,7 @@
 [![Minecraft](https://img.shields.io/badge/Minecraft-1.20.1-green.svg)](https://www.minecraft.net/)
 [![Forge](https://img.shields.io/badge/Forge-47.2.0+-orange.svg)](https://files.minecraftforge.net/)
 [![Create](https://img.shields.io/badge/Create-0.5.1+-purple.svg)](https://www.curseforge.com/minecraft/mc-mods/create)
-[![Version](https://img.shields.io/badge/Version-1.2.5-brightgreen.svg)](https://github.com/Sakura-Lhy0409/CreateRailsprawl/releases)
+[![Version](https://img.shields.io/badge/Version-1.2.7-brightgreen.svg)](https://github.com/Sakura-Lhy0409/CreateRailsprawl/releases)
 
 一个基于 Minecraft Forge 1.20.1 的模组，依赖 Create Mod 0.5.1+（支持 0.5.1j 和 6.0.x 版本）。在世界生成时自动生成机械动力风格的铁轨网络，包括桥梁、隧道和车站。
 

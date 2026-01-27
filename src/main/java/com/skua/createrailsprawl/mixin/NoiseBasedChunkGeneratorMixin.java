@@ -20,7 +20,7 @@ public abstract class NoiseBasedChunkGeneratorMixin {
         if (dimensionType.effectsLocation().toString().equals("minecraft:overworld")) {
             RegionPos regionPos = MyMth.regionPosFromChunkPos(chunk.getPos());
             RailwayBuilder railwayBuilder = RailwayBuilder.getInstance(level.getSeed(), level);
-            railwayBuilder.generateRailway(regionPos);
+            railwayBuilder.generateRailway(regionPos, level);
         }
     }
 }

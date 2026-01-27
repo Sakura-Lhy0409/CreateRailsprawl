@@ -52,8 +52,7 @@ public class RailwayFeature extends Feature<RailwayFeatureConfig> {
         // If not initialized and we have a WorldGenRegion, initialize it
         if (builder == null && world instanceof WorldGenRegion worldGenRegion) {
             builder = RailwayBuilder.getInstance(ctx.level().getSeed(), worldGenRegion);
-            // Trigger railway generation for this region
-            builder.generateRailway(regionPos);
+            builder.generateRailway(regionPos, worldGenRegion);
         }
         
         if (builder == null) {
@@ -62,8 +61,11 @@ public class RailwayFeature extends Feature<RailwayFeatureConfig> {
         }
 
         RailwayMap railwayMap = builder.regionRailways.get(regionPos);
+        if (railwayMap == null && world instanceof WorldGenRegion worldGenRegion) {
+            builder.generateRailway(regionPos, worldGenRegion);
+            railwayMap = builder.regionRailways.get(regionPos);
+        }
         if (railwayMap == null) {
-            // Railway map not generated yet for this region, skip for now
             return true;
         }
 
@@ -77,7 +79,7 @@ public class RailwayFeature extends Feature<RailwayFeatureConfig> {
             var station = stationPlace.stationTemplate();
             if (station == null) continue;
             var pos = stationPlace.placePos();
-            var center = pos.getCenter();
+            var center = new Vec3(pos.getX(), pos.getY(), pos.getZ());
 
             if (station.getBoundChunks(center).contains(cPos)) {
                 placeStation(cPos, center, station, chunk);
