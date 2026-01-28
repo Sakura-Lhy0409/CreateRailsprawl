@@ -9,6 +9,7 @@ import com.skua.createrailsprawl.railway.RailwayBuilder;
 import com.skua.createrailsprawl.railway.RailwayMap;
 import com.skua.createrailsprawl.railway.RegionPos;
 import com.skua.createrailsprawl.railway.planner.StationPlanner;
+import com.skua.createrailsprawl.runtime.ChunkGenTracker;
 import com.skua.createrailsprawl.structure.ModStructureManager;
 import com.skua.createrailsprawl.structure.RailwayTemplate;
 import com.skua.createrailsprawl.structure.StationTemplate;
@@ -51,6 +52,13 @@ public class RailwayFeature extends Feature<RailwayFeatureConfig> {
         
         // If not initialized and we have a WorldGenRegion, initialize it
         if (builder == null && world instanceof WorldGenRegion worldGenRegion) {
+            var serverLevel = ChunkGenTracker.extractServerLevel(worldGenRegion);
+            if (serverLevel != null) {
+                var spawnRegion = MyMth.regionPosFromChunkPos(new ChunkPos(serverLevel.getSharedSpawnPos()));
+                if (Math.abs(regionPos.x() - spawnRegion.x()) > 1 || Math.abs(regionPos.z() - spawnRegion.z()) > 1) {
+                    return true;
+                }
+            }
             builder = RailwayBuilder.getInstance(ctx.level().getSeed(), worldGenRegion);
             builder.generateRailway(regionPos, worldGenRegion);
         }
